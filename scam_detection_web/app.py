@@ -171,6 +171,8 @@ HTML_PAGE = """
             background-color: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(4px);
             animation: fadeIn 0.3s ease-out;
+            border-radius: 18px;
+            overflow: hidden;
         }
         
         @keyframes fadeIn {
@@ -185,7 +187,7 @@ HTML_PAGE = """
             left: 50%;
             transform: translate(-50%, -50%);
             padding: 40px;
-            border-radius: 20px;
+            border-radius: 28px;
             text-align: center;
             box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
             animation: slideInPopup 0.4s ease-out;
@@ -214,6 +216,74 @@ HTML_PAGE = """
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .tab-button {
+            padding: 12px 24px;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            color: #718096;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 15px;
+            width: auto;
+            margin: 0;
+            margin-top: -2px;
+        }
+        
+        .tab-button:hover {
+            color: #667eea;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .tab-button.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        input[type="url"], input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            color: #2d3748;
+        }
+        
+        input[type="url"]:focus, input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        input[type="url"]::placeholder, input[type="text"]::placeholder {
+            color: #a0aec0;
         }
         
         .header {
@@ -329,49 +399,71 @@ HTML_PAGE = """
             margin-top: 10px;
         }
         
-        .message-source-select {
+        /* Custom select with Font Awesome brand icons */
+        .custom-select {
+            position: relative;
             width: 100%;
+            animation: slideInLeft 0.5s ease-out;
+        }
+
+        .custom-select-button {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 10px;
             padding: 12px 16px;
             border: 2px solid #e2e8f0;
             border-radius: 10px;
-            font-family: inherit;
-            font-size: 14px;
-            font-weight: 600;
-            color: #2d3748;
             background: white;
             cursor: pointer;
-            transition: all 0.3s ease;
-            appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 12px center;
-            background-size: 20px;
-            padding-right: 40px;
-            animation: slideInLeft 0.5s ease-out;
+            font-weight: 600;
+            color: #2d3748;
+            text-align: left;
         }
-        
-        .message-source-select:hover {
-            border-color: #667eea;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
-            background-color: #f7fafc;
-        }
-        
-        .message-source-select:focus {
+
+        .custom-select-button:focus {
             outline: none;
             border-color: #667eea;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-            background-color: white;
         }
-        
-        .message-source-select option {
-            padding: 10px;
+
+        .custom-select-icon i { font-size: 16px; }
+
+        .custom-select-caret i { margin-left: auto; color: #718096; }
+
+        .custom-select-list {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: calc(100% + 8px);
             background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            max-height: 220px;
+            overflow: auto;
+            z-index: 50;
+            display: none;
+            padding: 8px 0;
+        }
+
+        .custom-select-list.show { display: block; }
+
+        .custom-select-item {
+            padding: 10px 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
             color: #2d3748;
         }
-        
-        .message-source-select option:hover {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+
+        .custom-select-item:hover {
+            background: linear-gradient(135deg, #f7fafc 0%, #f1f5f9 100%);
+        }
+
+        .custom-select-item.selected {
+            background: linear-gradient(135deg, #eef2ff 0%, #e9d5ff 100%);
         }
         
         .result {
@@ -414,7 +506,11 @@ HTML_PAGE = """
             background-size: 400% 400%;
             animation: gradientShift 15s ease infinite;
             padding: 20px;
-            overflow-y: auto;
+            overflow: hidden;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .result-modal.show {
@@ -427,7 +523,8 @@ HTML_PAGE = """
         .result-modal-content {
             background: white;
             padding: 60px 40px;
-            border-radius: 25px;
+            border-radius: 30px;
+            overflow: hidden;
             text-align: center;
             box-shadow: 0 25px 70px rgba(0, 0, 0, 0.3);
             animation: bounceIn 0.6s ease-out;
@@ -646,35 +743,68 @@ HTML_PAGE = """
             <i class="fas fa-shield-alt"></i>
         </div>
         <h1>Scam Detection</h1>
-        <p class="subtitle">Analyze messages to detect potential scams</p>
+        <p class="subtitle">Analyze messages and url to detect potential scams</p>
     </div>
 
     <form method="POST" id="analysisForm" onsubmit="showModal(event)">
-        <div class="form-group">
-            <label for="message">
-                <i class="fas fa-envelope"></i> Enter Message
-            </label>
-            <textarea id="message" name="message" placeholder="Paste the message you want to analyze..." required></textarea>
+        <div class="tabs">
+            <button type="button" class="tab-button active" onclick="switchTab('message')">
+                <i class="fas fa-envelope"></i> Message
+            </button>
+            <button type="button" class="tab-button" onclick="switchTab('url')">
+                <i class="fas fa-link"></i> URL
+            </button>
         </div>
-        <div class="form-group">
-            <label for="message_source">
-                <i class="fas fa-comment-dots"></i> Message Source
-            </label>
-            <select id="message_source" name="message_source" class="message-source-select" required>
-                <option value="Email" selected>📧 Email</option>
-                <option value="SMS">📱 SMS</option>
-                <option value="WhatsApp">💚 WhatsApp</option>
-                <option value="Telegram">💙 Telegram</option>
-                <option value="Instagram">📷 Instagram</option>
-                <option value="Facebook">👥 Facebook</option>
-                <option value="Twitter">🐦 Twitter</option>
-                <option value="Discord">🎮 Discord</option>
-                <option value="LinkedIn">💼 LinkedIn</option>
-            </select>
+        
+        <!-- Message Tab -->
+        <div id="message-tab" class="tab-content active">
+            <div class="form-group">
+                <label for="message">
+                    <i class="fas fa-envelope"></i> Enter Message
+                </label>
+                <textarea id="message" name="message" placeholder="Paste the message you want to analyze..."></textarea>
+            </div>
+            <div class="form-group">
+                <label for="message_source">
+                    <i class="fas fa-comment-dots"></i> Message Source
+                </label>
+                <div class="custom-select" id="message_source_custom">
+                    <button type="button" class="custom-select-button" id="message_source_button" aria-haspopup="listbox" aria-expanded="false">
+                        <span class="custom-select-icon"><i class="fas fa-envelope"></i></span>
+                        <span class="custom-select-label">Email</span>
+                        <span class="custom-select-caret"><i class="fas fa-chevron-down"></i></span>
+                    </button>
+                    <ul class="custom-select-list" id="message_source_list" role="listbox" aria-labelledby="message_source_button">
+                        <li class="custom-select-item selected" data-value="Email"><i class="fas fa-envelope"></i> Email</li>
+                        <li class="custom-select-item" data-value="SMS"><i class="fas fa-sms"></i> SMS</li>
+                        <li class="custom-select-item" data-value="WhatsApp"><i class="fab fa-whatsapp"></i> WhatsApp</li>
+                        <li class="custom-select-item" data-value="Telegram"><i class="fab fa-telegram"></i> Telegram</li>
+                        <li class="custom-select-item" data-value="Instagram"><i class="fab fa-instagram"></i> Instagram</li>
+                        <li class="custom-select-item" data-value="Facebook"><i class="fab fa-facebook-f"></i> Facebook</li>
+                        <li class="custom-select-item" data-value="Twitter"><i class="fab fa-twitter"></i> Twitter</li>
+                        <li class="custom-select-item" data-value="Discord"><i class="fab fa-discord"></i> Discord</li>
+                        <li class="custom-select-item" data-value="LinkedIn"><i class="fab fa-linkedin"></i> LinkedIn</li>
+                    </ul>
+                    <input type="hidden" id="message_source_input" name="message_source" value="Email">
+                </div>
+            </div>
+            <button type="submit" id="analyzeMessageBtn">
+                <i class="fas fa-search"></i> Analyze Message
+            </button>
         </div>
-        <button type="submit">
-            <i class="fas fa-search"></i> Analyze Message
-        </button>
+        
+        <!-- URL Tab -->
+        <div id="url-tab" class="tab-content">
+            <div class="form-group">
+                <label for="url">
+                    <i class="fas fa-link"></i> Enter URL
+                </label>
+                <input type="url" id="url" name="url" placeholder="Enter the URL you want to analyze (e.g., https://example.com)">
+            </div>
+            <button type="button" id="analyzeUrlBtn" onclick="analyzeURL()">
+                <i class="fas fa-search"></i> Analyze URL
+            </button>
+        </div>
     </form>
 
     {% if result %}
@@ -713,14 +843,116 @@ HTML_PAGE = """
 <div class="footer">Made by -<br>Akash M<br>Ganesh B<br>Mohith MS<br>Harish G<br>Gopi B</div>
 
 <script>
+    function switchTab(tabName) {
+        // Hide all tab contents
+        document.getElementById('message-tab').classList.remove('active');
+        document.getElementById('url-tab').classList.remove('active');
+        
+        // Deactivate all buttons
+        const buttons = document.querySelectorAll('.tab-button');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        
+        // Show selected tab
+        document.getElementById(tabName + '-tab').classList.add('active');
+        
+        // Activate clicked button
+        event.target.closest('.tab-button').classList.add('active');
+    }
+    
     function showModal(event) {
+        event.preventDefault();
+        const message = document.getElementById('message').value.trim();
+        
+        if (!message) {
+            alert('Please enter a message to analyze');
+            return;
+        }
+        
         const modal = document.getElementById('analyzeModal');
         modal.classList.add('show');
-        // Form will still submit and page will reload
+        
+        // Submit form
+        document.getElementById('analysisForm').submit();
+    }
+    
+    function analyzeURL() {
+        const url = document.getElementById('url').value.trim();
+        
+        if (!url) {
+            alert('Please enter a URL to analyze');
+            return;
+        }
+        
+        const modal = document.getElementById('analyzeModal');
+        const modalText = modal.querySelector('.modal-text');
+        modalText.textContent = 'Analyzing URL...';
+        modal.classList.add('show');
+        
+        fetch('/predict-url', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ url: url })
+        })
+        .then(response => response.json())
+        .then(data => {
+            modal.classList.remove('show');
+            
+            if (data.error) {
+                alert('Error: ' + data.error);
+                return;
+            }
+            
+            // Show result modal
+            showURLResult(data.result, data.probability, url);
+        })
+        .catch(error => {
+            modal.classList.remove('show');
+            alert('Error analyzing URL: ' + error);
+        });
+    }
+    
+    function showURLResult(result, probability, url) {
+        const resultHTML = `
+        <div class="result-modal show" id="resultModal">
+            <div class="result-modal-content ${result.includes('Safe') ? 'safe' : 'scam'}">
+                <div class="result-icon ${result.includes('Safe') ? 'safe' : 'scam'}">
+                    ${result.includes('Safe') ? '<i class="fas fa-check-circle"></i>' : '<i class="fas fa-exclamation-circle"></i>'}
+                </div>
+                <h2>${result}</h2>
+                <div class="source-info">
+                    <i class="fas fa-info-circle"></i> URL: <strong>${url}</strong>
+                </div>
+                
+                <div class="probability-bar">
+                    <div class="probability-fill" style="width: ${probability}%"></div>
+                </div>
+                
+                <div class="probability-text">
+                    <span>Scam Probability</span>
+                    <span class="probability-value">${probability}%</span>
+                </div>
+                
+                <button class="reset-button" onclick="resetForm()">
+                    <i class="fas fa-redo"></i> Check Another URL
+                </button>
+            </div>
+        </div>
+        `;
+        
+        const container = document.querySelector('.container');
+        const oldResult = document.getElementById('resultModal');
+        if (oldResult) {
+            oldResult.remove();
+        }
+        container.insertAdjacentHTML('afterend', resultHTML);
     }
     
     function resetForm() {
         document.getElementById('analysisForm').reset();
+        document.getElementById('message').value = '';
+        document.getElementById('url').value = '';
         const resultModal = document.getElementById('resultModal');
         if (resultModal) {
             resultModal.classList.remove('show');
@@ -731,6 +963,13 @@ HTML_PAGE = """
         }
         window.location.href = '/';
     }
+    
+    // Handle form submission for message analysis
+    document.getElementById('analysisForm').addEventListener('submit', function(e) {
+        if (document.getElementById('message-tab').classList.contains('active')) {
+            showModal(e);
+        }
+    });
     
     // Hide loading modal when page loads (after form submission)
     window.addEventListener('load', function() {
@@ -745,25 +984,71 @@ HTML_PAGE = """
         }
     });
     
-    // Add smooth transitions for dropdown
-    const messageSourceSelect = document.getElementById('message_source');
-    if (messageSourceSelect) {
-        messageSourceSelect.addEventListener('change', function() {
-            // Add a subtle animation effect on selection
-            this.style.transform = 'scale(0.98)';
-            setTimeout(() => {
-                this.style.transform = 'scale(1)';
-            }, 100);
+    // Custom select (message source) behavior using Font Awesome icons
+    (function() {
+        const customSelect = document.getElementById('message_source_custom');
+        if (!customSelect) return;
+
+        const button = document.getElementById('message_source_button');
+        const list = document.getElementById('message_source_list');
+        const hiddenInput = document.getElementById('message_source_input');
+        const labelSpan = button.querySelector('.custom-select-label');
+        const iconElem = button.querySelector('.custom-select-icon i');
+
+        function closeList() {
+            list.classList.remove('show');
+            button.setAttribute('aria-expanded', 'false');
+        }
+
+        button.addEventListener('click', function(e) {
+            const isOpen = list.classList.contains('show');
+            if (isOpen) closeList(); else {
+                list.classList.add('show');
+                button.setAttribute('aria-expanded', 'true');
+            }
         });
-        
-        messageSourceSelect.addEventListener('focus', function() {
-            this.style.borderColor = '#667eea';
+
+        list.addEventListener('click', function(e) {
+            const item = e.target.closest('.custom-select-item');
+            if (!item) return;
+
+            // update selection
+            const value = item.getAttribute('data-value');
+            const icon = item.querySelector('i');
+            hiddenInput.value = value;
+            labelSpan.textContent = item.textContent.trim();
+            iconElem.className = icon.className;
+
+            // mark selected
+            const prev = list.querySelector('.custom-select-item.selected');
+            if (prev) prev.classList.remove('selected');
+            item.classList.add('selected');
+
+            // subtle animation
+            button.style.transform = 'scale(0.98)';
+            setTimeout(() => { button.style.transform = 'scale(1)'; }, 100);
+
+            closeList();
         });
-        
-        messageSourceSelect.addEventListener('blur', function() {
-            this.style.borderColor = '#e2e8f0';
+
+        // close when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!customSelect.contains(e.target)) closeList();
         });
-    }
+
+        // keyboard support (toggle)
+        button.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                button.click();
+            }
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                const first = list.querySelector('.custom-select-item');
+                if (first) first.focus();
+            }
+        });
+    })();
 </script>
 </body>
 </html>
@@ -787,6 +1072,30 @@ def index():
         probability=probability,
         message_source=message_source
     )
+
+@app.route("/predict-url", methods=["POST"])
+def url_prediction():
+    try:
+        data = request.get_json()
+        url = data.get("url", "").strip()
+        
+        if not url:
+            return jsonify({"error": "URL is required"}), 400
+        
+        # Add http:// if no protocol specified
+        if not url.startswith(('http://', 'https://')):
+            url = 'https://' + url
+        
+        prediction, probability = predict_url(url)
+        result = "⚠️ Scam URL" if prediction == 1 else "✅ Safe URL"
+        
+        return jsonify({
+            "result": result,
+            "probability": round(probability, 2),
+            "prediction": prediction
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
     app.run(debug=True)
